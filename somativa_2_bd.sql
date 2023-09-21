@@ -1,6 +1,8 @@
 /*Criação do schema*/
 CREATE SCHEMA IF NOT EXISTS BD_SOMATIVA2;
 
+USE BD_SOMATIVA2;
+
 /*Criação das tabelas*/
 CREATE TABLE IF NOT EXISTS vinicola(
 	codVinicola BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
@@ -78,12 +80,14 @@ FROM vinho v
 INNER JOIN vinicola vc ON v.codVinicola = vc.codVinicola
 INNER JOIN regiao r ON vc.codRegiao = r.codRegiao;
 
-CREATE USER 'Sommelier'@'localhost' IDENTIFIED BY 'vinho123';
+CREATE USER 'Sommelier'@'localhost' IDENTIFIED BY 'vinho123' WITH max_queries_per_hour 40;
 
 GRANT SELECT ON bd_somativa2.vinho TO 'Sommelier'@'localhost';
 
+GRANT SELECT (codVinicola, nomeVinicola) ON bd_somativa2.vinicola TO 'Sommelier'@'localhost';
+
 GRANT SELECT ON bd_somativa2.apresentarvinhos TO 'Sommelier'@'localhost';
 
-FLUSH PRIVILEGES;
-
 SELECT * FROM apresentarVinhos;
+
+SELECT codVinicola, nomeVinicola FROM vinicola;
